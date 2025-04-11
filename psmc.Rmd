@@ -1,0 +1,34 @@
+---
+title: "psmc.Rmd"
+output: html_document
+date: "2025-04-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is my practice SLURM job script from psmcr
+```{bash}
+
+# convert VCF to fasta files
+dnabin_obj <- VCF2DNAbin("$VCF_FILE",
+                         refgenome="$REF_GENOME",
+                         individual = 27)
+
+# save DNAbin object
+saveRDS(dnabin_obj, file="$OUTPUT_DNABIN")
+
+# run psmcr
+psmcr_result <- psmc(dnabin_obj, niters = 5, B = 30, mc.cores = 8)
+
+# save psmc model
+saveRDS(psmcr_result, file ="psmcr.rds")
+EOF
+
+# run R script
+Rscript $R_SCRIPT
+
+
+```
+
